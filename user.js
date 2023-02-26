@@ -34,7 +34,11 @@ const UserSchema = new mongoose.Schema({
         ref: 'User' // You can mentions other collection as reference
     },
     hobbies: [String],
-    address: addressSchema // there will be a new ObjectId("id number here") will generate in nested address
+    address: addressSchema, // there will be a new ObjectId("id number here") will generate in nested address
+    products: [{
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Product'
+    }]
     // address: {
     //     street: String,
     //     city: String
@@ -42,31 +46,31 @@ const UserSchema = new mongoose.Schema({
 })
 
 // You can create a schema method and add your own customised funcitons
-UserSchema.methods.sayHi = function(){
-    console.log(`Hi, my name is ${this.name}`)
-}
+// UserSchema.methods.sayHi = function(){
+//     console.log(`Hi, my name is ${this.name}`)
+// }
 
-UserSchema.statics.findByName = function(name) {
-    return this.find({name: new RegExp(name, 'i')})
-}
+// UserSchema.statics.findByName = function(name) {
+//     return this.find({name: new RegExp(name, 'i')})
+// }
 
-UserSchema.query.byName = function(name) {
-    return this.where({name: new RegExp(name, 'i')})
-}
+// UserSchema.query.byName = function(name) {
+//     return this.where({name: new RegExp(name, 'i')})
+// }
 
-UserSchema.virtual('namedEmail').get(function(){
-    return `${this.name} <${this.email}>`
-})
+// UserSchema.virtual('namedEmail').get(function(){
+//     return `${this.name} <${this.email}>`
+// })
 
-UserSchema.pre('save', function(next){
-    console.log('heloo pre save middleware')
-    this.createdAt = Date.now()
-    next()
-})
+// UserSchema.pre('save', function(next){
+//     console.log('heloo pre save middleware')
+//     this.createdAt = Date.now()
+//     next()
+// })
 
-UserSchema.post('save', function(doc, next){
-    doc.sayHi()
-    next()
-})
+// UserSchema.post('save', function(doc, next){
+//     doc.sayHi()
+//     next()
+// })
 
 module.exports = mongoose.model("User", UserSchema)
